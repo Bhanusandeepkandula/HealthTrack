@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f7;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: #1c1c1e;
+            color: #ffffff;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            margin: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .container {
+            background: #2c2c2e;
+            color: #ffffff;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #1c1c1e;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .dark-mode h1 {
+            color: #ffffff;
+        }
+
+        label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+            text-align: left;
+            color: #3a3a3c;
+        }
+
+        .dark-mode label {
+            color: #e0e0e0;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+            background: #fafafa;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode select, .dark-mode input {
+            background: #3a3a3c;
+            border-color: #4a4a4c;
+            color: #ffffff;
+        }
+
+        select:focus, input:focus {
+            border-color: #007aff;
+            background: #ffffff;
+        }
+
+        .dark-mode select:focus, .dark-mode input:focus {
+            background: #4a4a4c;
+            border-color: #007aff;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            background: #000000;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background: #333333;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .input-group label {
+            flex: 1;
+            text-align: left;
+        }
+
+        .input-group input {
+            flex: 2;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 12px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark-mode .progress-bar {
+            background-color: #4a4a4c;
+        }
+
+        .progress {
+            height: 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .progress-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .result-box {
+            background: #f5f5f7;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .result-box {
+            background: #3a3a3c;
+        }
+
+        .result-box h3 {
+            font-size: 18px;
+            color: #1c1c1e;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .dark-mode .result-box h3 {
+            color: #ffffff;
+        }
+
+        .note {
+            color: #ff3b30;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .consultation-links li {
+            list-style: none;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .consultation-links a {
+            text-decoration: none;
+            color: #007aff;
+            font-weight: 500;
+        }
+
+        .dark-mode .consultation-links a {
+            color: #0a84ff;
+        }
+
+        .disease-card-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .disease-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dark-mode .disease-card {
+            background: #3a3a3c;
+        }
+
+        .cancel {
+            color: #ffffff;
+            background-color: #ff3b30;
+            padding: 5px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .cancel:hover {
+            background-color: #d70015;
+        }
+
+        .weight-unit-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .weight-unit-container select {
+            width: 48%;
+        }
+
+        .toggle-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #007aff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="toggle-container">
+            <label class="toggle-switch">
+                <input type="checkbox" id="themeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <h1>Health Tracker</h1>
+
+        <label for="diseaseSelect">Select Disease</label>
+        <select id="diseaseSelect">
+            <option value="">--Select Disease--</option>
+            <option value="Cancer">Cancer</option>
+            <option value="HIV">HIV</option>
+            <option value="Ebola">Ebola</option>
+            <option value="Rabies">Rabies</option>
+            <option value="Tuberculosis">Tuberculosis</option>
+            <option value="Diabetes">Diabetes</option>
+            <option value="COPD">COPD</option>
+            <option value="Lupus">Lupus</option>
+            <option value="RheumatoidArthritis">Rheumatoid Arthritis</option>
+            <option value="Dengue">Dengue</option>
+            <option value="Influenza">Influenza</option>
+            <option value="Asthma">Asthma</option>
+            <option value="Migraine">Migraine</option>
+            <option value="Acne">Acne</option>
+            <option value="Allergies">Allergies</option>
+            <option value="Arthritis">Arthritis</option>
+            <option value="Stroke">Stroke</option>
+            <option value="HeartDisease">Heart Disease</option>
+            <option value="ChronicFatigue">Chronic Fatigue</option>
+        </select>
+        <button id="addDisease">Add Disease</button>
+
+        <div class="disease-card-container" id="diseaseList"></div>
+
+        <div class="input-group">
+            <label for="height">Height (cm)</label>
+            <input type="number" id="height" placeholder="Enter height in cm">
+        </div>
+
+        <div class="input-group">
+            <label for="weight">Weight</label>
+            <input type="number" id="weight" placeholder="Enter weight">
+        </div>
+
+        <div class="weight-unit-container">
+            <label for="weightUnit">Select Weight Unit</label>
+            <select id="weightUnit">
+                <option value="kg">Kilograms (kg)</option>
+                <option value="lbs">Pounds (lbs)</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="bmi">BMI</label>
+            <input type="number" id="bmi" placeholder="Enter your BMI">
+        </div>
+
+        <button id="calculateScore">Calculate Health</button>
+
+        <div class="progress-bar">
+            <div class="progress" id="progressBar">
+                <div class="progress-label" id="progressLabel">0%</div>
+            </div>
+        </div>
+
+        <h2>Results</h2>
+        <div class="result-box">
+            <h3>Health Score:</h3>
+            <p id="healthScore"></p>
+            <h3>Health Status:</h3>
+            <p id="healthStatus"></p>
+            <h3>BMI:</h3>
+            <p id="bmiResult"></p>
+            <h3>Recommendations:</h3>
+            <ul id="recommendations"></ul>
+        </div>
+
+        <p class="note">Note: Consult a specialist for any serious health issues.</p>
+        <ul class="consultation-links">
+            <li><a href="#">Consult a Specialist</a></li>
+            <li><a href="#">Learn More</a></li>
+        </ul>
+    </div>
+
+    <script>
+        const diseaseScores = {
+            Cancer: 100, HIV: 90, Ebola: 95, Rabies: 95, Tuberculosis: 85,
+            Diabetes: 70, COPD: 75, Lupus: 80, RheumatoidArthritis: 65,
+            Dengue: 60, Influenza: 30, Asthma: 40, Migraine: 20, Acne: 10, Allergies: 15,
+            Arthritis: 55, Stroke: 85, HeartDisease: 90, ChronicFatigue: 65
+        };
+
+        const diseaseRecommendations = {
+            Cancer: "Consult an oncologist immediately. Maintain a healthy diet and avoid smoking.",
+            HIV: "Start antiretroviral therapy (ART) and practice safe sex. Regular check-ups are essential.",
+            Ebola: "Seek immediate medical attention. Isolate yourself to prevent spreading the virus.",
+            Rabies: "Get vaccinated immediately. Avoid contact with animals showing unusual behavior.",
+            Tuberculosis: "Complete the full course of antibiotics. Maintain good hygiene and ventilation.",
+            Diabetes: "Monitor blood sugar levels regularly. Follow a balanced diet and exercise daily.",
+            COPD: "Avoid smoking and air pollutants. Use prescribed inhalers and oxygen therapy if needed.",
+            Lupus: "Take prescribed medications. Avoid sun exposure and manage stress.",
+            RheumatoidArthritis: "Follow anti-inflammatory medications. Engage in low-impact exercises.",
+            Dengue: "Stay hydrated and rest. Seek medical care if symptoms worsen.",
+            Influenza: "Get vaccinated annually. Rest and stay hydrated.",
+            Asthma: "Use inhalers as prescribed. Avoid triggers like pollen and smoke.",
+            Migraine: "Identify and avoid triggers. Use prescribed medications for relief.",
+            Acne: "Maintain a skincare routine. Avoid oily foods and consult a dermatologist.",
+            Allergies: "Avoid allergens. Use antihistamines and consult an allergist.",
+            Arthritis: "Engage in physical therapy. Use anti-inflammatory medications.",
+            Stroke: "Seek immediate medical attention. Follow rehabilitation programs.",
+            HeartDisease: "Maintain a heart-healthy diet. Exercise regularly and avoid smoking.",
+            ChronicFatigue: "Get adequate rest. Follow a balanced diet and manage stress."
+        };
+
+        let selectedDiseases = [];
+
+        // Add Disease to the list
+        document.getElementById('addDisease').addEventListener('click', function () {
+            const diseaseSelect = document.getElementById('diseaseSelect');
+            const disease = diseaseSelect.value;
+
+            if (disease && !selectedDiseases.includes(disease)) {
+                selectedDiseases.push(disease);
+                updateDiseaseList();
+            } else if (!disease) {
+                alert("Please select a disease to add.");
+            } else {
+                alert("Disease already added.");
+            }
+        });
+
+        // Update disease list UI
+        function updateDiseaseList() {
+            const diseaseList = document.getElementById('diseaseList');
+            diseaseList.innerHTML = selectedDiseases
+                .map(disease => `
+                    <div class="disease-card">
+                        <span>${disease}</span>
+                        <span class="cancel" onclick="removeDisease('${disease}')">Remove</span>
+                    </div>
+                `)
+                .join('');
+        }
+
+        // Remove disease from the list
+        function removeDisease(disease) {
+            selectedDiseases = selectedDiseases.filter(d => d !== disease);
+            updateDiseaseList();
+        }
+
+        // Calculate Health Score
+        document.getElementById('calculateScore').addEventListener('click', function () {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const weightUnit = document.getElementById('weightUnit').value;
+            const bmi = parseFloat(document.getElementById('bmi').value);
+
+            // Convert weight to kg if in lbs
+            const weightInKg = weightUnit === 'lbs' ? weight * 0.453592 : weight;
+
+            // Calculate BMI if not provided
+            const calculatedBMI = bmi || (weightInKg / ((height / 100) ** 2)).toFixed(2);
+
+            // Display BMI result
+            document.getElementById('bmiResult').textContent = calculatedBMI;
+
+            // Calculate Health Score
+            let healthScore = 100;
+            selectedDiseases.forEach(disease => {
+                healthScore -= diseaseScores[disease] || 0;
+            });
+
+            // Adjust health score based on BMI
+            if (calculatedBMI < 18.5) {
+                healthScore -= 10; // Underweight
+            } else if (calculatedBMI >= 25) {
+                healthScore -= 15; // Overweight
+            }
+
+            // Update Health Score and Progress Bar
+            document.getElementById('healthScore').textContent = healthScore.toFixed(2);
+            document.getElementById('progressBar').style.width = `${healthScore}%`;
+            document.getElementById('progressLabel').textContent = `${healthScore.toFixed(2)}%`;
+            document.getElementById('progressBar').style.backgroundColor = healthScore >= 70 ? '#4CAF50' : healthScore >= 40 ? '#FFC107' : '#F44336';
+
+            // Update Health Status
+            let healthStatus = '';
+            if (healthScore >= 70) {
+                healthStatus = 'Healthy';
+            } else if (healthScore >= 40) {
+                healthStatus = 'Moderate';
+            } else {
+                healthStatus = 'Critical';
+            }
+            document.getElementById('healthStatus').textContent = healthStatus;
+
+            // Update Recommendations
+            const recommendations = [];
+            selectedDiseases.forEach(disease => {
+                recommendations.push(diseaseRecommendations[disease]);
+            });
+            if (healthScore < 70) {
+                recommendations.push('Consult a doctor for a detailed health checkup.');
+            }
+            if (calculatedBMI < 18.5) {
+                recommendations.push('Consider gaining weight through a balanced diet.');
+            } else if (calculatedBMI >= 25) {
+                recommendations.push('Consider losing weight through diet and exercise.');
+            }
+            document.getElementById('recommendations').innerHTML = recommendations.map(r => `<li>${r}</li>`).join('');
+        });
+
+        // Dark Mode / Light Mode Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('change', function () {
+            document.body.classList.toggle('dark-mode', themeToggle.checked);
+        });
+    </script>
+</body>
+</html>
